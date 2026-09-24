@@ -1,4 +1,11 @@
 package com.banking.transactionService.repository;
 
-public interface TransactionRepository {
+import com.banking.transactionService.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface TransactionRepository extends JpaRepository<Transaction,String> {
+List<Transaction> findBySenderAccountNumberOrderByDesc(String accountNumber);
+
 }
