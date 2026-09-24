@@ -1,3 +1,41 @@
 spring:
   application:
     name: accountService
+  datasource:
+    url: jdbc:mysql://localhost:3306/account_db?createDatabaseIfNotExist=true
+    username: root
+    password: my_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true  # Fixed typo: changed show:sql to show-sql
+    properties:
+      dialect: org.hibernate.dialect.MySQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: account-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Fixed spelling
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer  # Fixed spelling & class path
+      properties:
+        json:
+          trusted:
+            packages: "*"
+          use:
+            type:
+              headers: false
+            value:
+              default:
+                type: java.util.HashMap
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Fixed spelling
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # Fixed spelling
+server:
+  port: 1222
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

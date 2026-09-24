@@ -2,23 +2,21 @@ package com.banking.accountService.dto;
 
 import com.banking.accountService.entity.AccountStatus;
 import com.banking.accountService.entity.AccountType;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class createdAccountResponse {
+public class AccountResponse {
+    private String Id;
+    private String accountNumber;
     private String accountHolderName;
     private String email;
     private String phone;
