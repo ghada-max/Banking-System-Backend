@@ -47,7 +47,7 @@ public class TransactionController {
              @PathVariable String transactionId,
              @RequestParam String otp
     ){
-        log.info("verifyOTP transactionId:{} otp: {}", transactionId, otp)
+        log.info("verifyOTP transactionId:{} otp: {}", transactionId, otp);
     return ResponseEntity.ok(service.verifyOTP(transactionId,otp));
     }
 
