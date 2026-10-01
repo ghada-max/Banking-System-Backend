@@ -21,7 +21,7 @@ public class accountController {
     private final accountService service;
 
      @PostMapping("/createAccount")
-    public ResponseEntity<BigDecimal> createAccount(@Valid @RequestBody AccountRequest  request)
+    public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody AccountRequest  request)
     {
   return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(request));
     }
@@ -29,18 +29,18 @@ public class accountController {
     @GetMapping("/{AccountNumber}")
     public ResponseEntity<AccountResponse> getAccount(@PathVariable String AccountNumber)
     {
-        return ResponseEntity.ok(accountService.getAccount(AccountNumber));
+        return ResponseEntity.ok(service.getAccount(AccountNumber));
     }
 
     @GetMapping("/{AccountNumber}/balance")
     public ResponseEntity<BigDecimal> getBalance(@PathVariable String AccountNumber)
     {
-        return ResponseEntity.ok(accountService.getBalance(AccountNumber));
+        return ResponseEntity.ok(service.getBalance(AccountNumber));
     }
 
     @PutMapping("/{AccountNumber}/block")
     public ResponseEntity<String> blockAccount(@PathVariable String AccountNumber) {
-        accountService.blockAccount(AccountNumber);
+        service.blockAccount(AccountNumber);
         return ResponseEntity.ok("Account blocked successfully");
     }
 

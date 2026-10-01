@@ -37,7 +37,7 @@ public class accountService {
         account.setAccountStatus(AccountStatus.ACTIVE);
         account.setAccountNumber(generateAccountNumber());
         account.setDailyTransactionLimit(
-                request.getAccountType()== AccountType.SAVING? new BigDecimal(("100000")
+                request.getAccountType()== AccountType.SAVING? new BigDecimal(("100000"))
                 :new BigDecimal("500000")
                 );
                 Account savedAccount=repo.save(account);
@@ -73,7 +73,7 @@ public class accountService {
         return response;
     }
 
-    public  AccountResponse getAccount(String accountNumber) {
+    public AccountResponse getAccount(String accountNumber) {
        Account acc= repo.findByAccountNumber(accountNumber).orElseThrow(
                ()->new RuntimeException("account number not found")
        );
@@ -87,7 +87,7 @@ public class accountService {
         return acc.getBalance();
     }
 
-    public  void blockAccount(String AccountNumber) {
+    public void blockAccount(String AccountNumber) {
         Account acc= repo.findByAccountNumber(AccountNumber).orElseThrow(
                 ()->new RuntimeException("account number not found")
         );
@@ -121,7 +121,7 @@ public class accountService {
 
 
 
-    public String creditBalance(String accountNumber, BigDecimal amount) {
+    public void creditBalance(String accountNumber, BigDecimal amount) {
 
         log.info("crediting balance ... ");
         Account acc= repo.findByAccountNumber(accountNumber).orElseThrow(
