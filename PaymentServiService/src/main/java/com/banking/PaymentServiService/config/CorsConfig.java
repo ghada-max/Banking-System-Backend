@@ -6,18 +6,18 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CorsConfig { // 1. Première lettre en majuscule
+public class CorsConfig {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
 
             @Override
-            public void addCorsMappings(CorsRegistry registry) { // 2. Ajout du 's' à addCorsMappings
+            public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // 3. "PU" corrigé en "PUT"
-                        .allowedHeaders("*"); // 4. Doublon supprimé
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*");
             }
-        }; // 5. Point-virgule obligatoire ici !
+        };
     }
 }
