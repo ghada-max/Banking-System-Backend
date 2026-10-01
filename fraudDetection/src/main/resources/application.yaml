@@ -1,6 +1,6 @@
 spring:
   application:
-    name: transactionService
+    name: fraud-service
   data:
     redis:
       host: localhost
@@ -33,7 +33,7 @@ fraud:
 
 account:
   service:
-    url: http://localhost:2221
+    url: http://localhost:2111
 
 management:
   endpoints:
