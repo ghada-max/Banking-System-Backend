@@ -1,3 +1,65 @@
 spring:
   application:
     name: apiGateway
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cloud:
+    gateway:
+      routes:
+
+        - id: account-service
+          url: http://localhost:2111
+          predicates:
+            - Path=/api/account/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter-replenishRate: 10
+                redis-rate-limiter-burstCapacity: 20
+        #transaction Service
+        - id: transaction-service
+          url: http://localhost:2112
+          predicates:
+            - Path=/api/transaction/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter-replenishRate: 10
+                redis-rate-limiter-burstCapacity: 20
+        #fraud Service
+        - id: fraud-service
+          url: http://localhost:2113
+          predicates:
+            - Path=/api/fraud/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter-replenishRate: 10
+                redis-rate-limiter-burstCapacity: 20
+        #notification Service
+        - id: notification-service
+          url: http://localhost:2114
+          predicates:
+            - Path=/api/notification/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter-replenishRate: 10
+                redis-rate-limiter-burstCapacity: 20
+
+
+        #payment Service
+        - id: payment-service
+          url: http://localhost:2115
+          predicates:
+            - Path=/api/payment/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter-replenishRate: 10
+                redis-rate-limiter-burstCapacity: 20
+
+server:
+  port: 2116
