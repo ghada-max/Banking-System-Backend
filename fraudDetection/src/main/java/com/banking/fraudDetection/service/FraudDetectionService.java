@@ -122,7 +122,7 @@ public class FraudDetectionService {
     private boolean isBalanceCheckFailed(BigDecimal senderBalance, BigDecimal amount) {
     BigDecimal maxAllowed=senderBalance.multiply(
             BigDecimal.valueOf(maxBalancePercentage));
-    return amount.compareTo(maxAllowed)>0;
+            return amount.compareTo(maxAllowed)>0;
 
     }
 

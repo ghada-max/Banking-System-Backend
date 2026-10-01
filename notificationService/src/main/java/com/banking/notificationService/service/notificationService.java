@@ -26,6 +26,6 @@ public class notificationService {
     }
 
     private void sendAlert(String subject,String message){
-
+//one method for all Notification alerts types)
     }
 }

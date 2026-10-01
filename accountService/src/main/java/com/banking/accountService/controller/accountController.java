@@ -39,9 +39,9 @@ public class accountController {
     }
 
     @PutMapping("/{AccountNumber}/block")
-    public  void blockAccount(@PathVariable String AccountNumber)
-    {
+    public ResponseEntity<String> blockAccount(@PathVariable String AccountNumber) {
         accountService.blockAccount(AccountNumber);
+        return ResponseEntity.ok("Account blocked successfully");
     }
 
     @PutMapping("/{AccountNumber}/deduct")

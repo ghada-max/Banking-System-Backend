@@ -33,6 +33,7 @@ public class Transaction {
     @Column(nullable=false)
     private TransactionStatus status;
     private String Description;
+    private String setFailureReason;
     private String referenceNumber;
     @CreationTimestamp
     private LocalDateTime createdAt;

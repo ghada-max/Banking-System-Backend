@@ -13,6 +13,13 @@ public interface AccountServiceClient {
     //get account number via feign client
 
   @PutMapping("/api/account/{AccountNumber}/deduct")
-    String deductBalance(@PathVariable String accountNumber,
+    String deductBalance(@PathVariable String AccountNumber,
                          @RequestParam BigDecimal amount);
+
+  @PutMapping("/api/account/{AccountNumber}/credit")
+  String creditBalance(@PathVariable String AccountNumber,
+                       @RequestParam BigDecimal amount);
+
+  @PutMapping("/api/account/{AccountNumber}/block")
+  String bockAccount(@PathVariable String AccountNumber);
 }

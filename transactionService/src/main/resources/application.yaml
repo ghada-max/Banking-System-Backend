@@ -1,3 +1,48 @@
 spring:
   application:
     name: transactionService
+  data:
+    redis:
+      host: localhost
+  datasource:
+    url: jdbc:mysql://localhost:3306/transaction_db_db?createDatabaseIfNotExist=true
+    username: root
+    password: my_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true  # Fixed typo: changed show:sql to show-sql
+    properties:
+      dialect: org.hibernate.dialect.MySQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: transaction-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Fixed spelling
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer  # Fixed spelling & class path
+      properties:
+        json:
+          trusted:
+            packages: "*"
+          use:
+            type:
+              headers: false
+            value:
+              default:
+                type: java.util.HashMap
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Fixed spelling
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # Fixed spelling
+  account:
+    service:
+      url: http://localhost:2221
+  server:
+    port: 2112
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info
+

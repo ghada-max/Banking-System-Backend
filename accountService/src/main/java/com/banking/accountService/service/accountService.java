@@ -87,8 +87,8 @@ public class accountService {
         return acc.getBalance();
     }
 
-    public void blockAccount(String accountNumber) {
-        Account acc= repo.findByAccountNumber(accountNumber).orElseThrow(
+    public  void blockAccount(String AccountNumber) {
+        Account acc= repo.findByAccountNumber(AccountNumber).orElseThrow(
                 ()->new RuntimeException("account number not found")
         );
         acc.setAccountStatus(AccountStatus.BLOCKED);

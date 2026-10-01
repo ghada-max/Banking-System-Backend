@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class TransactionEventConsumer {
     private final KafkaTemplate<String,Object> kafkaTemplate;
+    private final TransactionService service;
     private final RedisTemplate<String,String> redisTemplate;
     private static final long OPT_EXPIRY_MINUTES=5;
     private static final String OTP_GENERATED_TOPIC = "otp.generatedTopic";
@@ -59,6 +60,19 @@ public class TransactionEventConsumer {
           log.error("error handling verification required",e.getMessage());
 
         }
+
+    }
+
+    @KafkaListener(topics="fraud.clean")
+    public void  consumeFraudCheckCleanResult (@Payload Map<String,Object> payload){
+
+        try{
+            String transactionId=(String) payload.get("transactionId");
+            service.processCleanResult(transactionId);
+        }catch(Exception e){
+
+        }
+
 
     }
 }
