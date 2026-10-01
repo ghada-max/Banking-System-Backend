@@ -39,11 +39,11 @@ public class TransactionService {
 
     public TransferResponse transfer(TransferRequest request) {
 
-        log.info("SAGA START - transfer: {}->amount: {}",request.getSenderAccountumber(),request.getReceiverAccountNumber(),request.getAmount())
+        log.info("SAGA START - transfer: {}->amount: {}",request.getSenderAccountumber(),request.getReceiverAccountNumber(),request.getAmount());
         client.deductBalance(request.getSenderAccountumber(),request.getAmount());
         Transaction transfer=new Transaction();
         transfer.setReceiverAccountNumber(request.getReceiverAccountNumber());
-        transfer.setSenderAccountumber(request.getSenderAccountumber());
+        transfer.setSenderAccountNumber(request.getSenderAccountumber());
         transfer.setAmount(request.getAmount());
         transfer.setType(TransactionType.TRANSFER);
         transfer.setStatus(TransactionStatus.PROCESSING);
@@ -54,7 +54,7 @@ public class TransactionService {
 //publich event to kafka(transfer initiated)
         TransactionInitiatedEvent event=new TransactionInitiatedEvent(
                 savedTransaction.getId(),
-                savedTransaction.getSenderAccountumber(),
+                savedTransaction.getSenderAccountNumber(),
                 savedTransaction.getReceiverAccountNumber(),
                 savedTransaction.getAmount(),
                 savedTransaction.getDescription()
@@ -74,7 +74,7 @@ public class TransactionService {
 
         TransferResponse response = new TransferResponse();
         response.setId(transaction.getId());
-        response.setSenderAccountumber(transaction.getSenderAccountumber());
+        response.setSenderAccountumber(transaction.getSenderAccountNumber());
         response.setReceiverAccountNumber(transaction.getReceiverAccountNumber());
         response.setAmount(transaction.getAmount());
         response.setType(transaction.getType());
@@ -94,9 +94,9 @@ public class TransactionService {
     }
 
     public List<TransferResponse> getTransactionHistory(String accountNumber) {
-      List<Transaction> transactions= repo.findBySenderAccountNumberOrderByDesc(accountNumber);
+      List<Transaction> transactions= repo.findBySenderAccountNumberOrderByCreatedAtDesc(accountNumber);
         return transactions.stream()
-                .map(this::mapToResponse) // Appelle ta méthode mapToResponse pour chaque élément
+                .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -143,7 +143,7 @@ public class TransactionService {
         client.creditBalance(transaction.getReceiverAccountNumber(),transaction.getAmount());
         Map<String,Object> completTransactionEvent=new HashMap<>();
         completTransactionEvent.put("transactionId",transaction.getId());
-        completTransactionEvent.put("senderAccountNumber",transaction.getSenderAccountumber());
+        completTransactionEvent.put("senderAccountNumber",transaction.getSenderAccountNumber());
         completTransactionEvent.put("receiverAccountNumber",transaction.getReceiverAccountNumber());
         completTransactionEvent.put("amount",transaction.getAmount());
         kafkaTemplate.send(TRANSACTION_COPMLETED_TOPIC,transaction.getId(),completTransactionEvent);
@@ -161,7 +161,7 @@ public class TransactionService {
 
         Map<String,Object> fraudEvent=new HashMap<>();
         fraudEvent.put("transactionId",transaction.getId());
-        fraudEvent.put("senderAccountNumber",transaction.getSenderAccountumber());
+        fraudEvent.put("senderAccountNumber",transaction.getSenderAccountNumber());
         fraudEvent.put("amount",transaction.getAmount());
         fraudEvent.put("reason",reason);
         kafkaTemplate.send(FRAUD_DETECTED_EVENT,transaction.getId(),fraudEvent);
@@ -174,14 +174,14 @@ public class TransactionService {
 
       //Feign Client
 
-        client.creditBalance(transaction.getSenderAccountumber(),transaction.getAmount());
+        client.creditBalance(transaction.getSenderAccountNumber(),transaction.getAmount());
         transaction.setStatus(TransactionStatus.FLAGGED);
         transaction.setSetFailureReason(reason);
         repo.save(transaction);
         log.info("sender amount compensated");
         Map<String,Object> refundEvent=new HashMap<>();
         refundEvent.put("transactionId",transaction.getId());
-        refundEvent.put("senderAccountNumber",transaction.getSenderAccountumber());
+        refundEvent.put("senderAccountNumber",transaction.getSenderAccountNumber());
         refundEvent.put("amount",transaction.getAmount());
         refundEvent.put("reason",reason);
         kafkaTemplate.send(TRANSACTION_REFUNDED_TOPIC,transaction.getId(),refundEvent);

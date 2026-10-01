@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class TransferRequest {
 
     private String id;

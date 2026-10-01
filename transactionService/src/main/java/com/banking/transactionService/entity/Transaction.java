@@ -21,7 +21,7 @@ public class Transaction {
     @GeneratedValue(strategy= GenerationType.UUID)
     private String id;
 
-    private String senderAccountumber;
+    private String senderAccountNumber;
 
     private String receiverAccountNumber;
     @Column(nullable=false,precision=15,scale=2)
